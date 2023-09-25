@@ -54,62 +54,13 @@ ownership.
 
 TODO: IMAGE
 
-Transaction
-
-Transaction
-
-Owner 1's
-Public Key
-
-Transaction
-
-Owner 2's
-Public Key
-
-Hash
-
-Owner 3's
-Public Key
-
-Hash
-Ver
-if
-
-Hash
-Ver
-ify
-
-y
-
-Owner 0's
-Signature
-
-Owner 1's
-Signature
-gn
-Si
-
-Owner 1's
-Private Key
-
-Owner 2's
-Signature
-Si
-
-gn
-
-Owner 2's
-Private Key
-
-Owner 3's
-Private Key
-
 The problem of course is the payee can't verify that one of the owners did not double-spend
 the coin. A common solution is to introduce a trusted central authority, or mint, that checks every
 transaction for double spending. After each transaction, the coin must be returned to the mint to
 issue a new coin, and only coins issued directly from the mint are trusted not to be double-spent.
 The problem with this solution is that the fate of the entire money system depends on the
 company running the mint, with every transaction having to go through them, just like a bank.
+
 We need a way for the payee to know that the previous owners did not sign any earlier
 transactions. For our purposes, the earliest transaction is the one that counts, so we don't care
 about later attempts to double-spend. The only way to confirm the absence of a transaction is to
@@ -126,25 +77,9 @@ hash of a block of items to be timestamped and widely publishing the hash, such 
 newspaper or Usenet post [2-5]. The timestamp proves that the data must have existed at the
 time, obviously, in order to get into the hash. Each timestamp includes the previous timestamp in
 its hash, forming a chain, with each additional timestamp reinforcing the ones before it.
-Hash
 
-Hash
+TODO: IMAGE
 
-Block
-Item
-
-Block
-Item
-
-...
-
-Item
-
-2
-
-Item
-
-...
 
 ### 4. Proof-of-Work
 
@@ -157,27 +92,8 @@ block until a value is found that gives the block's hash the required zero bits.
 effort has been expended to make it satisfy the proof-of-work, the block cannot be changed
 without redoing the work. As later blocks are chained after it, the work to change the block
 would include redoing all the blocks after it.
-Block
 
-Block
-
-Prev Hash
-Tx
-
-Nonce
-
-Tx
-
-Prev Hash
-
-...
-
-Tx
-
-Tx
-
-Nonce
-...
+TODO: IMAGE
 
 The proof-of-work also solves the problem of determining representation in majority decision
 making. If the majority were based on one-IP-address-one-vote, it could be subverted by anyone
@@ -188,26 +104,22 @@ fastest and outpace any competing chains. To modify a past block, an attacker wo
 redo the proof-of-work of the block and all blocks after it and then catch up with and surpass the
 work of the honest nodes. We will show later that the probability of a slower attacker catching up
 diminishes exponentially as subsequent blocks are added.
+
 To compensate for increasing hardware speed and varying interest in running nodes over time,
 the proof-of-work difficulty is determined by a moving average targeting an average number of
 blocks per hour. If they're generated too fast, the difficulty increases.
 
+
 ### 5. Network
 
 The steps to run the network are as follows:
-1)
-2)
-3)
-4)
-5)
-6)
 
-New transactions are broadcast to all nodes.
-Each node collects new transactions into a block.
-Each node works on finding a difficult proof-of-work for its block.
-When a node finds a proof-of-work, it broadcasts the block to all nodes.
-Nodes accept the block only if all transactions in it are valid and not already spent.
-Nodes express their acceptance of the block by working on creating the next block in the
+1. New transactions are broadcast to all nodes.
+1. Each node collects new transactions into a block.
+1. Each node works on finding a difficult proof-of-work for its block.
+1. When a node finds a proof-of-work, it broadcasts the block to all nodes.
+1. Nodes accept the block only if all transactions in it are valid and not already spent.
+1. Nodes express their acceptance of the block by working on creating the next block in the
 chain, using the hash of the accepted block as the previous hash.
 
 Nodes always consider the longest chain to be the correct one and will keep working on
@@ -216,12 +128,11 @@ nodes may receive one or the other first. In that case, they work on the first o
 but save the other branch in case it becomes longer. The tie will be broken when the next proofof-work is found and one branch becomes longer; the nodes that were working on the other
 branch will then switch to the longer one.
 
-3
-
 New transaction broadcasts do not necessarily need to reach all nodes. As long as they reach
 many nodes, they will get into a block before long. Block broadcasts are also tolerant of dropped
 messages. If a node does not receive a block, it will request it when it receives the next block and
 realizes it missed one.
+
 
 ### 6. Incentive
 
@@ -248,57 +159,8 @@ it can be discarded to save disk space. To facilitate this without breaking the 
 transactions are hashed in a Merkle Tree [7][2][5], with only the root included in the block's hash.
 Old blocks can then be compacted by stubbing off branches of the tree. The interior hashes do
 not need to be stored.
-Block
 
-Block
-
-Block Header (Block Hash)
-Prev Hash
-
-Nonce
-
-Block Header (Block Hash)
-Prev Hash
-
-Root Hash
-
-Hash01
-
-Nonce
-
-Root Hash
-
-Hash23
-
-Hash01
-
-Hash23
-
-Hash0
-
-Hash1
-
-Hash2
-
-Hash3
-
-Hash2
-
-Hash3
-
-Tx0
-
-Tx1
-
-Tx2
-
-Tx3
-
-Tx3
-
-Transactions Hashed in a Merkle Tree
-
-After Pruning Tx0-2 from the Block
+TODO: IMAGE
 
 A block header with no transactions would be about 80 bytes. If we suppose blocks are
 generated every 10 minutes, 80 bytes * 6 * 24 * 365 = 4.2MB per year. With computer systems
@@ -306,7 +168,6 @@ typically selling with 2GB of RAM as of 2008, and Moore's Law predicting current
 1.2GB per year, storage should not be a problem even if the block headers must be kept in
 memory.
 
-4
 
 ### 8. Simplified Payment Verification
 
@@ -316,38 +177,8 @@ network nodes until he's convinced he has the longest chain, and obtain the Merk
 linking the transaction to the block it's timestamped in. He can't check the transaction for
 himself, but by linking it to a place in the chain, he can see that a network node has accepted it,
 and blocks added after it further confirm the network has accepted it.
-Longest Proof-of-Work Chain
-Block Header
-Prev Hash
 
-Block Header
-Nonce
-
-Block Header
-
-Prev Hash
-
-Merkle Root
-
-Nonce
-
-Prev Hash
-
-Merkle Root
-
-Hash01
-
-Nonce
-
-Merkle Root
-
-Hash23
-Merkle Branch for Tx3
-Hash2
-
-Hash3
-
-Tx3
+TODO: IMAGE
 
 As such, the verification is reliable as long as honest nodes control the network, but is more
 vulnerable if the network is overpowered by an attacker. While network nodes can verify
@@ -365,22 +196,13 @@ separate transaction for every cent in a transfer. To allow value to be split an
 transactions contain multiple inputs and outputs. Normally there will be either a single input
 from a larger previous transaction or multiple inputs combining smaller amounts, and at most two
 outputs: one for the payment, and one returning the change, if any, back to the sender.
-Transaction
-In
 
-Out
-
-In
-
-...
-
-...
+TODO: IMAGE
 
 It should be noted that fan-out, where a transaction depends on several transactions, and those
 transactions depend on many more, is not a problem here. There is never the need to extract a
 complete standalone copy of a transaction's history.
 
-5
 
 ### 10. Privacy
 
@@ -391,30 +213,15 @@ another place: by keeping public keys anonymous. The public can see that someone
 an amount to someone else, but without information linking the transaction to anyone. This is
 similar to the level of information released by stock exchanges, where the time and size of
 individual trades, the "tape", is made public, but without telling who the parties were.
-Traditional Privacy Model
-Identities
 
-Transactions
-
-Trusted
-Third Party
-
-Counterparty
-
-Public
-
-New Privacy Model
-Identities
-
-Transactions
-
-Public
+TODO: IMAGE
 
 As an additional firewall, a new key pair should be used for each transaction to keep them
 from being linked to a common owner. Some linking is still unavoidable with multi-input
 transactions, which necessarily reveal that their inputs were owned by the same owner. The risk
 is that if the owner of a key is revealed, linking could reveal other transactions that belonged to
 the same owner.
+
 
 ### 11. Calculations
 
@@ -424,171 +231,122 @@ as creating value out of thin air or taking money that never belonged to the att
 not going to accept an invalid transaction as payment, and honest nodes will never accept a block
 containing them. An attacker can only try to change one of his own transactions to take back
 money he recently spent.
+
 The race between the honest chain and an attacker chain can be characterized as a Binomial
 Random Walk. The success event is the honest chain being extended by one block, increasing its
 lead by +1, and the failure event is the attacker's chain being extended by one block, reducing the
 gap by -1.
+
 The probability of an attacker catching up from a given deficit is analogous to a Gambler's
 Ruin problem. Suppose a gambler with unlimited credit starts at a deficit and plays potentially an
 infinite number of trials to try to reach breakeven. We can calculate the probability he ever
 reaches breakeven, or that an attacker ever catches up with the honest chain, as follows [8]:
+
 p = probability an honest node finds the next block
 q = probability the attacker finds the next block
 qz = probability the attacker will ever catch up from z blocks behind
 
-{
-
-q z=
-
-1
-if p≤q
-z
-q / p if pq
-
-}
-6
+TODO: IMAGE/LATEX
 
 Given our assumption that p > q, the probability drops exponentially as the number of blocks the
 attacker has to catch up with increases. With the odds against him, if he doesn't make a lucky
 lunge forward early on, his chances become vanishingly small as he falls further behind.
+
 We now consider how long the recipient of a new transaction needs to wait before being
 sufficiently certain the sender can't change the transaction. We assume the sender is an attacker
 who wants to make the recipient believe he paid him for a while, then switch it to pay back to
 himself after some time has passed. The receiver will be alerted when that happens, but the
 sender hopes it will be too late.
+
 The receiver generates a new key pair and gives the public key to the sender shortly before
 signing. This prevents the sender from preparing a chain of blocks ahead of time by working on
 it continuously until he is lucky enough to get far enough ahead, then executing the transaction at
 that moment. Once the transaction is sent, the dishonest sender starts working in secret on a
 parallel chain containing an alternate version of his transaction.
+
 The recipient waits until the transaction has been added to a block and z blocks have been
 linked after it. He doesn't know the exact amount of progress the attacker has made, but
 assuming the honest blocks took the average expected time per block, the attacker's potential
 progress will be a Poisson distribution with expected value:
 
-=z
-
-q
-p
+TODO: IMAGE/LATEX
 
 To get the probability the attacker could still catch up now, we multiply the Poisson density for
 each amount of progress he could have made by the probability he could catch up from that point:
-k
 
-−
-
-{
-
- z−k 
-if k ≤ z
-∑  ke! ⋅ q / p1
-if k  z
-k =0
-∞
-
-}
+TODO: IMAGE/LATEX
 
 Rearranging to avoid summing the infinite tail of the distribution...
-z
 
-k e−
-1−q / p z− k 
-k!
-k =0
-
-1−∑
+TODO: IMAGE/LATEX
 
 Converting to C code...
+
+```
 #include <math.h>
 double AttackerSuccessProbability(double q, int z)
 {
-double p = 1.0 - q;
-double lambda = z * (q / p);
-double sum = 1.0;
-int i, k;
-for (k = 0; k <= z; k++)
-{
-double poisson = exp(-lambda);
-for (i = 1; i <= k; i++)
-poisson *= lambda / i;
-sum -= poisson * (1 - pow(q / p, z - k));
+  double p = 1.0 - q;
+  double lambda = z * (q / p);
+  double sum = 1.0;
+  int i, k;
+  for (k = 0; k <= z; k++)
+  {
+    double poisson = exp(-lambda);
+    for (i = 1; i <= k; i++)
+      poisson *= lambda / i;
+    sum -= poisson * (1 - pow(q / p, z - k));
+  }
+  return sum;
 }
-return sum;
-}
-
-7
+```
 
 Running some results, we can see the probability drop off exponentially with z.
-q=0.1
-z=0
-z=1
-z=2
-z=3
-z=4
-z=5
-z=6
-z=7
-z=8
-z=9
-z=10
 
-P=1.0000000
-P=0.2045873
-P=0.0509779
-P=0.0131722
-P=0.0034552
-P=0.0009137
-P=0.0002428
-P=0.0000647
-P=0.0000173
-P=0.0000046
-P=0.0000012
+```
+q=0.1
+z=0   P=1.0000000
+z=1   P=0.2045873
+z=2   P=0.0509779
+z=3   P=0.0131722
+z=4   P=0.0034552
+z=5   P=0.0009137
+z=6   P=0.0002428
+z=7   P=0.0000647
+z=8   P=0.0000173
+z=9   P=0.0000046
+z=10  P=0.0000012
 
 q=0.3
-z=0
-z=5
-z=10
-z=15
-z=20
-z=25
-z=30
-z=35
-z=40
-z=45
-z=50
-
-P=1.0000000
-P=0.1773523
-P=0.0416605
-P=0.0101008
-P=0.0024804
-P=0.0006132
-P=0.0001522
-P=0.0000379
-P=0.0000095
-P=0.0000024
-P=0.0000006
+z=0   P=1.0000000
+z=5   P=0.1773523
+z=10  P=0.0416605
+z=15  P=0.0101008
+z=20  P=0.0024804
+z=25  P=0.0006132
+z=30  P=0.0001522
+z=35  P=0.0000379
+z=40  P=0.0000095
+z=45  P=0.0000024
+z=50  P=0.0000006
+```
 
 Solving for P less than 0.1%...
-P < 0.001
-q=0.10
-z=5
-q=0.15
-z=8
-q=0.20
-z=11
-q=0.25
-z=15
-q=0.30
-z=24
-q=0.35
-z=41
-q=0.40
-z=89
-q=0.45
-z=340
 
-12. Conclusion
+```
+P < 0.001
+q=0.10  z=5
+q=0.15  z=8
+q=0.20  z=11
+q=0.25  z=15
+q=0.30  z=24
+q=0.35  z=41
+q=0.40  z=89
+q=0.45  z=340
+```
+
+### 12. Conclusion
+
 We have proposed a system for electronic transactions without relying on trust. We started with
 the usual framework of coins made from digital signatures, which provides strong control of
 ownership, but is incomplete without a way to prevent double-spending. To solve this, we
@@ -602,21 +360,18 @@ happened while they were gone. They vote with their CPU power, expressing their 
 valid blocks by working on extending them and rejecting invalid blocks by refusing to work on
 them. Any needed rules and incentives can be enforced with this consensus mechanism.
 
-8
 
 #### References
 
 [1] W. Dai, "b-money," [http://www.weidai.com/bmoney.txt](http://www.weidai.com/bmoney.txt), 1998.
 [2] H. Massias, X.S. Avila, and J.-J. Quisquater, "[Design of a secure timestamping service with minimal
-trust requirements](https://nakamotoinstitute.org/static/docs/secure-timestamping-service.pdf)," In 20th Symposium on Information Theory in the Benelux, May 1999.
+trust requirements](https://nakamotoinstitute.org/static/docs/secure-timestamping-service.pdf)," In __20th Symposium on Information Theory in the Benelux__, May 1999.
 [3] S. Haber, W.S. Stornetta, "[How to time-stamp a digital document](https://link.springer.com/content/pdf/10.1007/BF00196791.pdf?pdf=button)," In Journal of Cryptology, vol 3, no
 2, pages 99-111, 1991.
 [4] D. Bayer, S. Haber, W.S. Stornetta, "[Improving the efficiency and reliability of digital time-stamping](https://www.math.columbia.edu/~bayer/papers/Timestamp_BHS93.pdf),"
 In Sequences II: Methods in Communication, Security and Computer Science, pages 329-334, 1993.
-[5] S. Haber, W.S. Stornetta, "[Secure names for bit-strings](https://nakamotoinstitute.org/static/docs/secure-names-bit-strings.pdf)," In Proceedings of the 4th ACM Conference
-on Computer and Communications Security, pages 28-35, April 1997.
+[5] S. Haber, W.S. Stornetta, "[Secure names for bit-strings](https://nakamotoinstitute.org/static/docs/secure-names-bit-strings.pdf)," __In Proceedings of the 4th ACM Conference on Computer and Communications Security__, pages 28-35, April 1997.
 [6] A. Back, "Hashcash - a denial of service counter-measure,"
 [http://www.hashcash.org/papers/hashcash.pdf](http://www.hashcash.org/papers/hashcash.pdf), 2002.
-[7] R.C. Merkle, "[Protocols for public key cryptosystems](http://www.ralphmerkle.com/papers/Protocols.pdf)," In Proc. 1980 Symposium on Security and
-Privacy, IEEE Computer Society, pages 122-133, April 1980.
+[7] R.C. Merkle, "[Protocols for public key cryptosystems](http://www.ralphmerkle.com/papers/Protocols.pdf)," In Proc. 1980 Symposium on Security and Privacy, IEEE Computer Society, pages 122-133, April 1980.
 [8] W. Feller, "An introduction to probability theory and its applications," 1957.
