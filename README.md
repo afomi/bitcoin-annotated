@@ -1,9 +1,14 @@
-Bitcoin: A Peer-to-Peer Electronic Cash System
+### Bitcoin: A Peer-to-Peer Electronic Cash System
+
 Satoshi Nakamoto
+
 satoshin@gmx.com
+
 www.bitcoin.org
 
-Abstract. A purely peer-to-peer version of electronic cash would allow online
+---
+
+**Abstract.** A purely peer-to-peer version of electronic cash would allow online
 payments to be sent directly from one party to another without going through a
 financial institution. Digital signatures provide part of the solution, but the main
 benefits are lost if a trusted third party is still required to prevent double-spending.
@@ -18,9 +23,7 @@ network itself requires minimal structure. Messages are broadcast on a best effo
 basis, and nodes can leave and rejoin the network at will, accepting the longest
 proof-of-work chain as proof of what happened while they were gone.
 
-1.
-
-Introduction
+### 1. Introduction
 
 Commerce on the Internet has come to rely almost exclusively on financial institutions serving as
 trusted third parties to process electronic payments. While the system works well enough for
@@ -42,16 +45,15 @@ timestamp server to generate computational proof of the chronological order of t
 system is secure as long as honest nodes collectively control more CPU power than any
 cooperating group of attacker nodes.
 
-1
-
-2.
-
-Transactions
+### 2. Transactions
 
 We define an electronic coin as a chain of digital signatures. Each owner transfers the coin to the
 next by digitally signing a hash of the previous transaction and the public key of the next owner
 and adding these to the end of the coin. A payee can verify the signatures to verify the chain of
 ownership.
+
+TODO: IMAGE
+
 Transaction
 
 Transaction
@@ -117,9 +119,7 @@ publicly announced [1], and we need a system for participants to agree on a sing
 order in which they were received. The payee needs proof that at the time of each transaction, the
 majority of nodes agreed it was the first received.
 
-3.
-
-Timestamp Server
+### 3. Timestamp Server
 
 The solution we propose begins with a timestamp server. A timestamp server works by taking a
 hash of a block of items to be timestamped and widely publishing the hash, such as in a
@@ -146,9 +146,7 @@ Item
 
 ...
 
-4.
-
-Proof-of-Work
+### 4. Proof-of-Work
 
 To implement a distributed timestamp server on a peer-to-peer basis, we will need to use a proofof-work system similar to Adam Back's Hashcash [6], rather than newspaper or Usenet posts.
 The proof-of-work involves scanning for a value that when hashed, such as with SHA-256, the
@@ -194,9 +192,7 @@ To compensate for increasing hardware speed and varying interest in running node
 the proof-of-work difficulty is determined by a moving average targeting an average number of
 blocks per hour. If they're generated too fast, the difficulty increases.
 
-5.
-
-Network
+### 5. Network
 
 The steps to run the network are as follows:
 1)
@@ -222,14 +218,12 @@ branch will then switch to the longer one.
 
 3
 
-New transaction broadcasts do not necessarily need to reach all nodes. As long as they reach
+New transaction broadcasts do not necessarily need to reach all nodes. As long as they reach
 many nodes, they will get into a block before long. Block broadcasts are also tolerant of dropped
 messages. If a node does not receive a block, it will request it when it receives the next block and
 realizes it missed one.
 
-6.
-
-Incentive
+### 6. Incentive
 
 By convention, the first transaction in a block is a special transaction that starts a new coin owned
 by the creator of the block. This adds an incentive for nodes to support the network, and provides
@@ -247,9 +241,7 @@ to defraud people by stealing back his payments, or using it to generate new coi
 find it more profitable to play by the rules, such rules that favour him with more new coins than
 everyone else combined, than to undermine the system and the validity of his own wealth.
 
-7.
-
-Reclaiming Disk Space
+### 7. Reclaiming Disk Space
 
 Once the latest transaction in a coin is buried under enough blocks, the spent transactions before
 it can be discarded to save disk space. To facilitate this without breaking the block's hash,
@@ -316,9 +308,7 @@ memory.
 
 4
 
-8.
-
-Simplified Payment Verification
+### 8. Simplified Payment Verification
 
 It is possible to verify payments without running a full network node. A user only needs to keep
 a copy of the block headers of the longest proof-of-work chain, which he can get by querying
@@ -368,9 +358,7 @@ block, prompting the user's software to download the full block and alerted tran
 confirm the inconsistency. Businesses that receive frequent payments will probably still want to
 run their own nodes for more independent security and quicker verification.
 
-9.
-
-Combining and Splitting Value
+### 9. Combining and Splitting Value
 
 Although it would be possible to handle coins individually, it would be unwieldy to make a
 separate transaction for every cent in a transfer. To allow value to be split and combined,
@@ -394,7 +382,8 @@ complete standalone copy of a transaction's history.
 
 5
 
-10. Privacy
+### 10. Privacy
+
 The traditional banking model achieves a level of privacy by limiting access to information to the
 parties involved and the trusted third party. The necessity to announce all transactions publicly
 precludes this method, but privacy can still be maintained by breaking the flow of information in
@@ -427,7 +416,8 @@ transactions, which necessarily reveal that their inputs were owned by the same 
 is that if the owner of a key is revealed, linking could reveal other transactions that belonged to
 the same owner.
 
-11. Calculations
+### 11. Calculations
+
 We consider the scenario of an attacker trying to generate an alternate chain faster than the honest
 chain. Even if this is accomplished, it does not throw the system open to arbitrary changes, such
 as creating value out of thin air or taking money that never belonged to the attacker. Nodes are
@@ -458,7 +448,7 @@ z
 }
 6
 
-Given our assumption that p > q, the probability drops exponentially as the number of blocks the
+Given our assumption that p > q, the probability drops exponentially as the number of blocks the
 attacker has to catch up with increases. With the odds against him, if he doesn't make a lucky
 lunge forward early on, his chances become vanishingly small as he falls further behind.
 We now consider how long the recipient of a new transaction needs to wait before being
@@ -528,7 +518,7 @@ return sum;
 
 7
 
-Running some results, we can see the probability drop off exponentially with z.
+Running some results, we can see the probability drop off exponentially with z.
 q=0.1
 z=0
 z=1
@@ -614,22 +604,19 @@ them. Any needed rules and incentives can be enforced with this consensus mechan
 
 8
 
-References
-[1] W. Dai, "b-money," http://www.weidai.com/bmoney.txt, 1998.
-[2] H. Massias, X.S. Avila, and J.-J. Quisquater, "Design of a secure timestamping service with minimal
-trust requirements," In 20th Symposium on Information Theory in the Benelux, May 1999.
-[3] S. Haber, W.S. Stornetta, "How to time-stamp a digital document," In Journal of Cryptology, vol 3, no
+#### References
+
+[1] W. Dai, "b-money," [http://www.weidai.com/bmoney.txt](http://www.weidai.com/bmoney.txt), 1998.
+[2] H. Massias, X.S. Avila, and J.-J. Quisquater, "[Design of a secure timestamping service with minimal
+trust requirements](https://nakamotoinstitute.org/static/docs/secure-timestamping-service.pdf)," In 20th Symposium on Information Theory in the Benelux, May 1999.
+[3] S. Haber, W.S. Stornetta, "[How to time-stamp a digital document](https://link.springer.com/content/pdf/10.1007/BF00196791.pdf?pdf=button)," In Journal of Cryptology, vol 3, no
 2, pages 99-111, 1991.
-[4] D. Bayer, S. Haber, W.S. Stornetta, "Improving the efficiency and reliability of digital time-stamping,"
+[4] D. Bayer, S. Haber, W.S. Stornetta, "[Improving the efficiency and reliability of digital time-stamping](https://www.math.columbia.edu/~bayer/papers/Timestamp_BHS93.pdf),"
 In Sequences II: Methods in Communication, Security and Computer Science, pages 329-334, 1993.
-[5] S. Haber, W.S. Stornetta, "Secure names for bit-strings," In Proceedings of the 4th ACM Conference
+[5] S. Haber, W.S. Stornetta, "[Secure names for bit-strings](https://nakamotoinstitute.org/static/docs/secure-names-bit-strings.pdf)," In Proceedings of the 4th ACM Conference
 on Computer and Communications Security, pages 28-35, April 1997.
 [6] A. Back, "Hashcash - a denial of service counter-measure,"
-http://www.hashcash.org/papers/hashcash.pdf, 2002.
-[7] R.C. Merkle, "Protocols for public key cryptosystems," In Proc. 1980 Symposium on Security and
+[http://www.hashcash.org/papers/hashcash.pdf](http://www.hashcash.org/papers/hashcash.pdf), 2002.
+[7] R.C. Merkle, "[Protocols for public key cryptosystems](http://www.ralphmerkle.com/papers/Protocols.pdf)," In Proc. 1980 Symposium on Security and
 Privacy, IEEE Computer Society, pages 122-133, April 1980.
 [8] W. Feller, "An introduction to probability theory and its applications," 1957.
-
-9
-
-
